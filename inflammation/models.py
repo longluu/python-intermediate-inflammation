@@ -46,6 +46,15 @@ def daily_min(data):
     return np.min(data, axis=0)
 
 
+def daily_std(data):
+    """Calculate the daily standard deviation of a 2d inflammation data array.
+
+    :param data: a 2D array of inflammation data (each row is one subject and each column is one day)
+    :returns: standard deviation of measurements across patients for each day
+    """
+    return np.std(data, axis=0)
+
+
 def patient_normalise(data):
     """
     Normalise patient data from a 2D inflammation data array.
@@ -72,3 +81,55 @@ def patient_normalise(data):
     normalised[np.isnan(normalised)] = 0
     normalised[normalised < 0] = 0
     return normalised
+
+
+class Observation:
+    def __init__(self, day, value):
+        self.day = day
+        self.value = value
+
+    def __str__(self):
+        return str(self.value)
+
+
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return self.name
+
+
+class Patient(Person):
+    def __init__(self, name, observations=None):
+        super().__init__(name)
+        self.observations = []
+        if observations is not None:
+            self.observations = observations
+
+    def add_observation(self, value, day=None):
+        if day is None:
+            try:
+                day = self.observations[-1].day + 1
+
+            except IndexError:
+                day = 0
+
+        new_observation = Observation(day, value)
+
+        self.observations.append(new_observation)
+        return new_observation
+
+    @property
+    def last_observation(self):
+        return self.observations[-1]
+
+
+class Doctor(Person):
+    def __init__(self, name):
+        super().__init__(name)
+        self.patient = []
+
+    def add_patient(self, patient):
+        self.patient.append(patient)
+

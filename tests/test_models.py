@@ -53,7 +53,7 @@ def test_daily_min_string():
     "test, expected, raises",
     [
         ([[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], None),
-        ('hi', None, TypeError),
+        ([['a', 'd'], ['b', 'e'], ['c', 'f']], None, TypeError),
         (10, None, ValueError),
         ([[-1, 1, 1], [1, 1, 1], [1, 1, 1]], [[1, 1, 1], [1, 1, 1], [1, 1, 1]], ValueError),
         ([[np.nan, 0, 0], [0, np.nan, 0], [0, 0, np.nan]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], None),
